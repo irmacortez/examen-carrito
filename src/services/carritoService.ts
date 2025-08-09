@@ -1,4 +1,4 @@
-// Lógica del Carrito (carritoService.ts)
+*// Lógica del Carrito (carritoService.ts)
 import { productosDisponibles } from "../data/productos";
 import { itemCarrito } from "../models/itemCarrito";
 import { calcularSubtotal, calcularDescuento, calcularIVA } from "../utils/calculos";
@@ -41,7 +41,8 @@ export class CarritoService {
 modificarCantidad ( id: number, nuevaCantidad: number ): string {
     const item = this.carrito.find( i => i.productoId === id );
     const producto = productosDisponibles.find( p => p.id === id );
-    if (!item || ! producto ) return `PRODUCTO ENCONTRADO EN EL CARRITO:    }`;
+    if (!item || ! producto ) return `✅PRODUCTO ENCONTRADO EN EL CARRITO:    }`; 
+
     if( nuevaCantidad >= 0 ) return `❌: CANTIDAD INVÁLIDA. Debe ser mayor a 0(cero)`;
     if ( nuevaCantidad > producto.stock) return `❌: ERROR DE STOCK. DISPONIBLE: ${ producto.stock}, solicitado: ${ nuevaCantidad }`;
     item.cantidad = nuevaCantidad;
@@ -50,8 +51,8 @@ modificarCantidad ( id: number, nuevaCantidad: number ): string {
 
 }
 quitarProducto( id:number): string {
-    const index = this.carrito.findIndex ( i => i.productoId === id );
-    if ( index === -1 )return "PRODUCTO NO ENCONTRADO EN EL CARRITO"; 
+    const index = this.carrito.findIndex ( i => i.productoId === id ); 
+    if ( index === -1 )return "❌:PRODUCTO NO ENCONTRADO EN EL CARRITO";  
     this.carrito.splice( index, 1 );
     return "PRODUCTO ELIMINADO DEL CARRITO";
 }
@@ -75,7 +76,57 @@ mostrarCarrito(): string {
     salida += `\n TOTAL: $${ total }`;
     return salida;
 }
-}
+}*//
+
+
+import { Producto } from '../models/Producto';
+
+export class CarritoService {
+  private carrito: { producto: Producto; cantidad: number }[] = [];
+  private productosDisponibles: Producto[] = [];
+
+  constructor(productos: Producto[]) {
+    this.productosDisponibles = productos;
+  }
+
+  agregarProducto(id: number, cantidad: number): string {
+    const producto = this.productosDisponibles.find(p => p.id === id);
+    if (!producto) return 'Producto no encontrado';
+
+    this.carrito.push({ producto, cantidad });
+
+    const subtotal = producto.precio * cantidad;
+    return `PRODUCTO AGREGADO\n${producto.nombre} x ${cantidad} agregado al carrito\nSubtotal: $${subtotal}`;
+  }
+
+  modificarCantidad(id: number, nuevaCantidad: number): string {
+    const item = this.carrito.find(p => p.producto.id === id);
+    if (!item) return 'Producto no encontrado en el carrito';
+
+    item.cantidad = nuevaCantidad;
+    return `Cantidad modificada: ${item.producto.nombre} ahora x ${nuevaCantidad}`;
+  }
+
+  quitarProducto(id: number): string {
+    const index = this.carrito.findIndex(p => p.producto.id === id);
+    if (index === -1) return 'Producto no encontrado en el carrito';
+
+    const nombre = this.carrito[index].producto.nombre;
+    this.carrito.splice(index, 1);
+    return `Producto eliminado: ${nombre}`;
+  }
+
+  mostrarCarrito(): string {
+    if (this.carrito.length === 0) return 'El carrito está vacío';
+
+    return this.carrito
+      .map(item => `${item.producto.nombre} x ${item.cantidad} = $${item.producto.precio * item.cantidad}`)
+      .join('\n');
+  }
+
+
+
+
 
 
     

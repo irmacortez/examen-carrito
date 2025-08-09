@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CarritoService = void 0;
-// Lógica del Carrito (carritoService.ts)
+ *
+; // Lógica del Carrito (carritoService.ts)
 var productos_1 = require("../data/productos");
 var calculos_1 = require("../utils/calculos");
 var CarritoService = /** @class */ (function () {
@@ -43,7 +44,7 @@ string;
     var item = this.carrito.find(function (i) { return i.productoId === id; });
     var producto = productos_1.productosDisponibles.find(function (p) { return p.id === id; });
     if (!item || !producto)
-        return "PRODUCTO ENCONTRADO EN EL CARRITO:    }";
+        return "\u2705PRODUCTO ENCONTRADO EN EL CARRITO:    }";
     if (nuevaCantidad >= 0)
         return "\u274C: CANTIDAD INV\u00C1LIDA. Debe ser mayor a 0(cero)";
     if (nuevaCantidad > producto.stock)
@@ -57,7 +58,7 @@ string;
 {
     var index = this.carrito.findIndex(function (i) { return i.productoId === id; });
     if (index === -1)
-        return "PRODUCTO NO ENCONTRADO EN EL CARRITO";
+        return "❌:PRODUCTO NO ENCONTRADO EN EL CARRITO";
     this.carrito.splice(index, 1);
     return "PRODUCTO ELIMINADO DEL CARRITO";
 }
@@ -80,3 +81,44 @@ string;
     salida_1 += "\n TOTAL: $".concat(total);
     return salida_1;
 }
+ *
+; //
+var CarritoService = /** @class */ (function () {
+    function CarritoService(productos) {
+        this.carrito = [];
+        this.productosDisponibles = [];
+        this.productosDisponibles = productos;
+    }
+    CarritoService.prototype.agregarProducto = function (id, cantidad) {
+        var producto = this.productosDisponibles.find(function (p) { return p.id === id; });
+        if (!producto)
+            return 'Producto no encontrado';
+        this.carrito.push({ producto: producto, cantidad: cantidad });
+        var subtotal = producto.precio * cantidad;
+        return "PRODUCTO AGREGADO\n".concat(producto.nombre, " x ").concat(cantidad, " agregado al carrito\nSubtotal: $").concat(subtotal);
+    };
+    CarritoService.prototype.modificarCantidad = function (id, nuevaCantidad) {
+        var item = this.carrito.find(function (p) { return p.producto.id === id; });
+        if (!item)
+            return 'Producto no encontrado en el carrito';
+        item.cantidad = nuevaCantidad;
+        return "Cantidad modificada: ".concat(item.producto.nombre, " ahora x ").concat(nuevaCantidad);
+    };
+    CarritoService.prototype.quitarProducto = function (id) {
+        var index = this.carrito.findIndex(function (p) { return p.producto.id === id; });
+        if (index === -1)
+            return 'Producto no encontrado en el carrito';
+        var nombre = this.carrito[index].producto.nombre;
+        this.carrito.splice(index, 1);
+        return "Producto eliminado: ".concat(nombre);
+    };
+    CarritoService.prototype.mostrarCarrito = function () {
+        if (this.carrito.length === 0)
+            return 'El carrito está vacío';
+        return this.carrito
+            .map(function (item) { return "".concat(item.producto.nombre, " x ").concat(item.cantidad, " = $").concat(item.producto.precio * item.cantidad); })
+            .join('\n');
+    };
+    return CarritoService;
+}());
+exports.CarritoService = CarritoService;
