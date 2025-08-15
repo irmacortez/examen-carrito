@@ -4,15 +4,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.calcularSubtotal = calcularSubtotal;
 exports.calcularDescuento = calcularDescuento;
 exports.calcularIVA = calcularIVA;
+const itemCarrito_1 = require("../models/itemCarrito");
 function calcularSubtotal(carrito) {
-    return carrito.reduce(function (acc, item) { return acc + item.subtotal; }, 0);
+    return carrito.reduce((acc, item) => acc + item.subtotal, 0);
 }
 function calcularDescuento(subtotal, carrito) {
-    var descuentoPorMonto = subtotal >= 500000 ? 0.08 : subtotal >= 100000 ? 0.05 : 0;
-    var descuentoPorCantidad = 0;
-    carrito.forEach(function (item) {
+    let descuentoPorMonto = subtotal >= 500000 ? 0.08 : subtotal >= 100000 ? 0.05 : 0;
+    let descuentoPorCantidad = 0;
+    carrito.forEach(item => {
         if (item.cantidad >= 3) {
-            var desc = item.subtotal * 0.10;
+            const desc = item.subtotal * 0.10;
             if (desc > descuentoPorCantidad)
                 descuentoPorCantidad = desc;
         }
@@ -22,3 +23,4 @@ function calcularDescuento(subtotal, carrito) {
 function calcularIVA(monto) {
     return monto * 0.21;
 }
+//# sourceMappingURL=finanzas.js.map
