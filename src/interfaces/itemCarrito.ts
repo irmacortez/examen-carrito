@@ -1,10 +1,12 @@
-// Interface (Models/itemCarrito.ts)
-export interface itemCarrito{
-    productoId: number;
-    nombre: string;
-    precio: number;
-    cantidad: number;
-    subtotal: number;
+// Interface (itemCarrito.ts)
+
+
+export interface ItemCarrito {
+  productoId: number;
+  nombre: string;
+  precio: number;
+  cantidad: number;
+  subtotal: number;
 }
 
 

@@ -1,13 +1,32 @@
-// PUNTO DE ENTRADA (MAIN)
-import {CarritoService } from "./services/carritoService";
-const carrito = new CarritoService();
+import { Carrito } from "./logica/Carrito";
 
-console.log(carrito.agregarProducto(1, 1)); //Caso 1
-console.log(carrito.agregarProducto(2, 2)); //Caso 1    
-console.log(carrito.agregarProducto(1, 10)); //Caso 2
-console.log(carrito.agregarProducto(4, 1)); //Caso 3
-console.log(carrito.agregarProducto(999, 1)); //Caso 4
-console.log(carrito.mostrarCarrito()); // Estado del Carrito
-console.log(carrito.modificarCantidad(2,3)); //Caso 6
-console.log(carrito.quitarProducto(1)); //Caso 7
-console.log(carrito.mostrarCarrito()); 
+const carrito = new Carrito();
+
+console.log("=== SIMULADOR DE CARRITO DE COMPRAS ===");
+
+// Caso 1
+console.log(carrito.agregar(1, 1));
+console.log(carrito.agregar(2, 2));
+console.log(carrito.mostrar());
+
+// Caso 2
+console.log(carrito.agregar(1, 10));
+
+// Caso 3
+console.log(carrito.agregar(4, 1));
+
+// Caso 4
+console.log(carrito.agregar(999, 1));
+
+// Caso 5
+console.log(carrito.agregar(3, 7));
+console.log(carrito.mostrar());
+
+// Caso 6
+console.log(carrito.modificar(2, 3));
+console.log(carrito.mostrar());
+
+// Caso 7
+console.log(carrito.quitar(1));
+console.log(carrito.mostrar());
+
